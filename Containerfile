@@ -7,6 +7,9 @@ WORKDIR /app
 # Add the current directory contents into the container at /app
 ADD . /app
 
+# Ensure data directory exists
+RUN mkdir -p /app/data
+
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
