@@ -2,11 +2,22 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import datetime
+import os
 
 
 # Initialize the Flask application
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///app/data/my-budget.db'
+
+# Get the absolute path of the directory of the current file
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Create the path to the database file
+db_path = os.path.join(BASE_DIR, "data", "my-budget.db")
+
+# Use the path in the SQLAlchemy database URI
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///app/data/my-budget.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///./data/my-budget.db'
 db = SQLAlchemy(app)
 month_names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 year = datetime.datetime.now().year
@@ -17,16 +28,16 @@ month = datetime.datetime.now().month
 # List to store entries
 entries = []
 
-# Create all tables in the database which do not exist yet
-with app.app_context():
-    db.create_all()
-
 
 class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     bill_name = db.Column(db.String(80), nullable=False)
     due_date = db.Column(db.Date, nullable=False)
     amount_due = db.Column(db.Float, nullable=False)
+
+# Create all tables in the database which do not exist yet
+with app.app_context():
+    db.create_all()
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -162,9 +173,3 @@ def month_view(year, month):
     now = datetime.datetime.now()
     return render_template('month.html', now=now, entries=entries, year=year, month=month, month_names=month_names, years=years, total_due=total_due)
 
-
-
-
-if __name__ == '__main__':
-    # Run the application
-    app.run(host='0.0.0.0', port=5000)
