@@ -1,0 +1,30 @@
+<!-- templates/edit.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Set the title of the document -->
+    <title>Edit Entry</title>
+
+    <!-- Link to the CSS stylesheet -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+
+    <!-- JavaScript function to confirm edits -->
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</head>
+<body>
+    <form method="POST">
+        <label for="due_date">Due Date:</label><br>
+        <input type="date" id="due_date" name="due_date" value="{{ entry.due_date }}" required><br>
+        <label for="bill_name">Bill Name:</label><br>
+        <input type="text" id="bill_name" name="bill_name" value="{{ entry.bill_name }}" required><br>
+        <label for="amount_due">Amount Due:</label><br>
+        <input type="number" id="amount_due" name="amount_due" value="{{ entry.amount_due }}" required><br>
+        <!-- Submit button for the form -->
+        <button type="submit">Submit</button>
+    </form>
+    <footer>
+        <!-- Footer information -->
+        <p>© 2024 My Budget</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!-- delete.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Entry</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Delete Entry</h1>
+    </header>
+    <main>
+        <p>Are you sure you want to delete this entry?</p>
+        <p>{{ entry.due_date }} - {{ entry.bill_name }} - {{ entry.amount_due }}</p>
+        <form method="POST" action="{{ url_for('delete', id=entry.id) }}">
+            <button type="submit">Yes, delete it</button>
+        </form>
+        <button onclick="window.history.back()">No, go back</button>
+    </main>
+    <footer>
+        <!-- Footer information -->
+        <p>© 2024 My Budget</p>
+    </footer>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>

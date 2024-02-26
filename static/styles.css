@@ -1,0 +1,62 @@
+/* static/styles.css */
+body {
+    font-family: Arial, sans-serif;
+}
+form {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+label {
+    display: block;
+    margin: 10px 0;
+}
+input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+}
+button {
+    background-color: #4CAF50; /* green */
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049; /* darker green */
+}
+.submit-button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #45a049; /* Darker green */
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+.table-style {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.cell-style {
+    border: 1px solid black;
+    padding: 10px;
+}
