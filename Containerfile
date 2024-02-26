@@ -11,7 +11,7 @@ ADD . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Make port 5000 available to the world outside this container
-EXPOSE 5000
+EXPOSE 8000
 
-# Run app.py when the container launches
-CMD ["python", "my-budget.py"]
+# Use gunicorn to run your application
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0", "my-budget:app"]
