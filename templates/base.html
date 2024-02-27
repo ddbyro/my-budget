@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- This section is for the head content like the title of the page, links to CSS files, etc. -->
+</head>
+<body>
+    <!-- This section is for the navigation, header, and other similar elements. -->
+
+    <!-- This form is for selecting a pay period. It uses a GET request to the 'pay_period_view' route. -->
+    <form method="GET" action="{{ url_for('pay_period_view') }}">
+        <!-- This is the label and input field for the start date of the pay period. -->
+        {{ form.start_date.label }} {{ form.start_date }}
+        <!-- This is the label and input field for the end date of the pay period. -->
+        {{ form.end_date.label }} {{ form.end_date }}
+        <!-- This is the submit button for the form. -->
+        {{ form.submit }}
+    </form>
+
+    <!-- This is the main content of the page. The specific content is determined by the child templates that extend this base template. -->
+    {% block content %}
+    {% endblock content %}
+</body>
+</html>
