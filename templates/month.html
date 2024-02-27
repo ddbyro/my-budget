@@ -2,27 +2,22 @@
 <html>
 <head>
     <title>Monthly Bills</title>
-    <!-- Link to the CSS stylesheet -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}"> <!-- Stylesheet link -->
 </head>
-    <body>
-        <!-- A form for adding a new entry -->
-        <form method="POST">
-            <!-- Input for the due date -->
-            <label for="due_date">Due Date</label>
-            <input type="date" id="due_date" name="due_date" required aria-label="Due Date">
-            <!-- Input for the bill name -->
-            <label for="bill_name">Bill Name</label>
-            <input type="text" id="bill_name" name="bill_name" required aria-label="Bill Name">
-            <!-- Input for the amount due -->
-            <label for="amount_due">Amount Due</label>
-            <input type="number" id="amount_due" name="amount_due" required aria-label="Amount Due">
-            <!-- Submit button for the form -->
-            <button type="submit">Submit</button>
-        </form>
-        <h1>Bills for {{ month_names[month-1] }} {{ year }}</h1>
-        <!-- Dropdown for each month -->
-        <select onchange="location = this.value;">
+<body>
+    <form method="POST"> <!-- Form for adding a new entry -->
+        <label for="due_date">Due Date</label>
+        <input type="date" id="due_date" name="due_date" required> <!-- Due date input field -->
+        <label for="bill_name">Bill Name</label>
+        <input type="text" id="bill_name" name="bill_name" required> <!-- Bill name input field -->
+        <label for="amount_due">Amount Due</label>
+        <input type="number" id="amount_due" name="amount_due" required> <!-- Amount due input field -->
+        <button type="submit">Submit</button> <!-- Submit button -->
+    </form>
+    <h1>Bills for {{ month_names[month-1] }} {{ year }}</h1> <!-- Display the month and year -->
+    <div class="dropdown-container"> <!-- Container for dropdowns -->
+        <label for="monthDropdown">Month:</label>
+        <select id="monthDropdown" onchange="location = this.value;"> <!-- Dropdown for selecting month -->
         {% for month_number in range(1, 13) %}
             <option value="{{ url_for('month_view', year=year, month=month_number) }}"
                 {% if month_number == month %} selected {% endif %}>
@@ -30,55 +25,49 @@
             </option>
         {% endfor %}
         </select>
-        <!-- Dropdown for each year -->
-        <select id="yearDropdown" onchange="location = this.value;">
+        <label for="yearDropdown">Year:</label>
+        <select id="yearDropdown" onchange="location = this.value;"> <!-- Dropdown for selecting year -->
         {% for y in years %}
-            <option value="{{ url_for('month_view', year=y.year, month=month) }}"
-                {% if y.year == year %} selected {% endif %}>
-                {{ y.year }}
+            <option value="{{ url_for('month_view', year=y[0], month=month) }}"
+                {% if y[0] == year %} selected {% endif %}>
+                {{ y[0] }}
             </option>
         {% endfor %}
         </select>
-        <div>
-            <a href="{{ url_for('month_view', year=now.year, month=now.month) }}">This Month's Bills</a>
-        </div>
-
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Due Date</th>
-                    <th>Bill Name</th>
-                    <th>Amount Due</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for entry in entries %}
-                    <tr>
-                        <td>{{ entry.due_date }}</td>
-                        <td>{{ entry.bill_name }}</td>
-                        <td>{{ entry.amount_due }}</td>
-                        <td>
-                            <a href="{{ url_for('edit', id=entry.id) }}">Edit</a>
-                            <a href="{{ url_for('delete', id=entry.id) }}">Delete</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    <table>
-        <!-- Your table headers and data rows here -->
-        <tfoot>
+    </div>
+    <div>
+        <a href="{{ url_for('month_view', year=now.year, month=now.month) }}">This Month's Bills</a> <!-- Link to this month's bills -->
+        <a href="{{ url_for('home') }}">Upcoming Bills</a> <!-- Link to upcoming bills -->
+    </div>
+    <table class="amountTotalTable"> <!-- Table for displaying bills -->
+        <thead>
             <tr>
-                <td colspan="4">Total Due This</td>
-                <td>{{ total_due }}</td>
+                <th>Due Date</th>
+                <th>Bill Name</th>
+                <th>Amount Due</th>
+                <th>Actions</th>
             </tr>
-        </tfoot>
+        </thead>
+        <tbody>
+            {% for entry in entries %} <!-- Loop through each entry -->
+                <tr>
+                    <td>{{ entry.due_date }}</td>
+                    <td>{{ entry.bill_name }}</td>
+                    <td>{{ entry.amount_due }}</td>
+                    <td>
+                        <a href="{{ url_for('edit', id=entry.id) }}">Edit</a> <!-- Link to edit entry -->
+                        <a href="{{ url_for('delete', id=entry.id) }}">Delete</a> <!-- Link to delete entry -->
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tr>
+            <td colspan="2"> Total Due This Month</td>
+            <td colspan="1" id="totalAmountCell">{{ total_due }}</td> <!-- Display total due this month -->
+        </tr>
     </table>
     <footer>
-        <!-- Footer information -->
-        <p>© 2024 My Budget</p>
+        <p>© 2024 My Budget</p> <!-- Footer information -->
     </footer>
 </body>
 </html>

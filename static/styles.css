@@ -1,62 +1,87 @@
-/* static/styles.css */
+/* General body styling */
 body {
-    font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif; /* Set the font for the body */
 }
+
+/* Form styling */
 form {
-    margin: auto;
-    width: 50%;
-    padding: 10px;
+    margin: auto; /* Center the form */
+    width: 50%; /* Set the width of the form */
+    padding: 10px; /* Add padding around the form */
 }
+
+/* Label styling */
 label {
-    display: block;
-    margin: 10px 0;
+    display: block; /* Display label as block */
+    margin: 10px 0; /* Add margin to the top and bottom of the label */
 }
+
+/* Input and button styling */
 input, button {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
+    width: 100%; /* Set the width of the input and button */
+    padding: 10px; /* Add padding to the input and button */
+    margin: 5px 0; /* Add margin to the top and bottom of the input and button */
 }
+
+/* Button styling */
 button {
-    background-color: #4CAF50; /* green */
-    color: white;
-    cursor: pointer;
+    background-color: #4CAF50; /* Set the background color of the button */
+    color: white; /* Set the text color of the button */
+    cursor: pointer; /* Change the cursor to a pointer when hovering over the button */
 }
 
+/* Button hover styling */
 button:hover {
-    background-color: #45a049; /* darker green */
+    background-color: #45a049; /* Change the background color of the button when hovering */
 }
+
+/* Submit button styling */
 .submit-button {
-    background-color: #4CAF50; /* Green */
-    color: white;
-    border: none;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    background-color: #4CAF50; /* Set the background color of the submit button */
+    color: white; /* Set the text color of the submit button */
+    border: none; /* Remove the border of the submit button */
+    padding: 15px 32px; /* Add padding to the submit button */
+    text-align: center; /* Center the text of the submit button */
+    text-decoration: none; /* Remove the text decoration of the submit button */
+    display: inline-block; /* Display the submit button as inline-block */
+    font-size: 16px; /* Set the font size of the submit button */
+    margin: 4px 2px; /* Add margin around the submit button */
+    cursor: pointer; /* Change the cursor to a pointer when hovering over the submit button */
+    transition: background-color 0.3s ease; /* Add a transition to the background color of the submit button */
 }
 
+/* Submit button hover styling */
 .submit-button:hover {
-    background-color: #45a049; /* Darker green */
-}
-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-th, td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: left;
-}
-.table-style {
-    border-collapse: collapse;
-    width: 100%;
+    background-color: #45a049; /* Change the background color of the submit button when hovering */
 }
 
-.cell-style {
-    border: 1px solid black;
-    padding: 10px;
+/* Table styling */
+table, .table-style {
+    border-collapse: collapse; /* Collapse the borders of the table */
+    width: 100%; /* Set the width of the table */
+}
+
+/* Table cell styling */
+th, td, .cell-style {
+    border: 1px solid black; /* Add a border to the table cells */
+    padding: 8px; /* Add padding to the table cells */
+    text-align: left; /* Align the text to the left in the table cells */
+}
+
+/* Table header styling */
+th {
+    background-color: grey; /* Set the background color of the table headers */
+    color: white; /* Set the text color of the table headers */
+}
+
+/* Specific table cell styling */
+table.amountTotalTable td#totalAmountCell {
+    background-color: yellow; /* Set the background color of the specific table cell */
+}
+
+/* Dropdown container styling */
+.dropdown-container {
+    display: flex; /* Display the dropdown container as flex */
+    gap: 10px; /* Add a gap between the items in the dropdown container */
+    align-items: center; /* Align the items in the center of the dropdown container */
 }

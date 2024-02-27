@@ -1,30 +1,22 @@
-<!-- templates/edit.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- Set the title of the document -->
-    <title>Edit Entry</title>
-
-    <!-- Link to the CSS stylesheet -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-
-    <!-- JavaScript function to confirm edits -->
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <title>Edit Entry</title> <!-- Title of the page -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}"> <!-- Link to the stylesheet -->
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script> <!-- Link to the JavaScript file -->
 </head>
 <body>
-    <form method="POST">
+    <form method="POST"> <!-- Form for editing an entry -->
         <label for="due_date">Due Date:</label><br>
-        <input type="date" id="due_date" name="due_date" value="{{ entry.due_date }}" required><br>
+        <input type="date" id="due_date" name="due_date" value="{{ entry.due_date }}" required><br> <!-- Input field for due date -->
         <label for="bill_name">Bill Name:</label><br>
-        <input type="text" id="bill_name" name="bill_name" value="{{ entry.bill_name }}" required><br>
+        <input type="text" id="bill_name" name="bill_name" value="{{ entry.bill_name }}" required><br> <!-- Input field for bill name -->
         <label for="amount_due">Amount Due:</label><br>
-        <input type="number" id="amount_due" name="amount_due" value="{{ entry.amount_due }}" required><br>
-        <!-- Submit button for the form -->
-        <button type="submit">Submit</button>
+        <input type="number" id="amount_due" name="amount_due" value="{{ entry.amount_due }}" required><br> <!-- Input field for amount due -->
+        <button type="submit">Submit</button> <!-- Submit button for the form -->
     </form>
     <footer>
-        <!-- Footer information -->
-        <p>© 2024 My Budget</p>
+        <p>© 2024 My Budget</p> <!-- Footer of the page -->
     </footer>
 </body>
 </html>
