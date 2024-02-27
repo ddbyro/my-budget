@@ -1,6 +1,8 @@
 # app.py
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import FlaskForm
+from wtforms import DateField, SubmitField
 import datetime
 import os
 
@@ -24,7 +26,6 @@ year = datetime.datetime.now().year
 month = datetime.datetime.now().month
 
 
-
 # List to store entries
 entries = []
 
@@ -35,17 +36,54 @@ class Entry(db.Model):
     due_date = db.Column(db.Date, nullable=False)
     amount_due = db.Column(db.Float, nullable=False)
 
+
+class PayPeriodForm(FlaskForm):
+    start_date = DateField('Start Date', format='%Y-%m-%d')
+    end_date = DateField('End Date', format='%Y-%m-%d')
+    submit = SubmitField('Sort')
+
 # Create all tables in the database which do not exist yet
 with app.app_context():
     db.create_all()
 
 
-@app.route('/', methods=['GET', 'POST'])
+# @app.route('/', methods=['GET', 'POST'])
+# def home():
+#     # Redirect to the month_view function
+#     year = datetime.datetime.now().year
+#     month = datetime.datetime.now().month
+#     return redirect(url_for('month_view', year=year, month=month))
+
+
+def get_bills():
+    return Entry.query.all()
+
+@app.route('/')
 def home():
-    # Redirect to the month_view function
-    year = datetime.datetime.now().year
-    month = datetime.datetime.now().month
-    return redirect(url_for('month_view', year=year, month=month))
+    # Get the list of bills from the database
+    bills = get_bills()  
+
+    # Get the current date
+    now = datetime.datetime.now()
+
+    # Determine the current and next pay periods
+    if now.day <= 15:
+        this_pay_period_start = datetime.datetime(now.year, now.month, 1)
+        this_pay_period_end = datetime.datetime(now.year, now.month, 15)
+        next_pay_period_start = datetime.datetime(now.year, now.month, 16)
+        next_pay_period_end = datetime.datetime(now.year, now.month + 1, 1) - datetime.timedelta(days=1)
+    else:
+        this_pay_period_start = datetime.datetime(now.year, now.month, 16)
+        this_pay_period_end = datetime.datetime(now.year, now.month + 1, 1) - datetime.timedelta(days=1)
+        next_pay_period_start = datetime.datetime(now.year, now.month + 1, 1)
+        next_pay_period_end = datetime.datetime(now.year, now.month + 1, 15)
+
+    # Render the index.html template and pass the bills and pay period dates to it
+    return render_template('index.html', bills=bills, now=now,
+                            this_pay_period_start=this_pay_period_start,
+                            this_pay_period_end=this_pay_period_end, 
+                            next_pay_period_start=next_pay_period_start, 
+                            next_pay_period_end=next_pay_period_end)
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
@@ -156,7 +194,6 @@ def month_view(year, month):
         month = due_date.month
         return redirect(url_for('month_view', year=year, month=month))
     
-    # Rest of your code...
     
     # Define month_names
     month_names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -173,3 +210,18 @@ def month_view(year, month):
     now = datetime.datetime.now()
     return render_template('month.html', now=now, entries=entries, year=year, month=month, month_names=month_names, years=years, total_due=total_due)
 
+
+@app.route('/pay_period/', methods=['GET'])
+def pay_period_view():
+    form = PayPeriodForm(request.form)
+    if form.validate_on_submit():
+        start_date = form.start_date.data
+        end_date = form.end_date.data
+
+        # Query entries for the specified pay period and sort them by due date
+        entries = Entry.query.filter(Entry.due_date.between(start_date, end_date)).order_by(Entry.due_date).all()
+
+        # Calculate total amount due
+        total_due = sum(entry.amount_due for entry in entries)
+
+        return render_template('pay_period.html', entries=entries, start_date=start_date, end_date=end_date, total_due=total_due)

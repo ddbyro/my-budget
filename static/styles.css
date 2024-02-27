@@ -38,7 +38,6 @@ button:hover {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-
 .submit-button:hover {
     background-color: #45a049; /* Darker green */
 }
@@ -59,4 +58,9 @@ th, td {
 .cell-style {
     border: 1px solid black;
     padding: 10px;
+}
+.dropdown-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
