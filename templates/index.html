@@ -1,21 +1,17 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- The title of the webpage -->
     <title>Budget App</title>
-    <!-- Link to the CSS stylesheet -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}"> <!-- Stylesheet link -->
 </head>
 <body>
     <header>
-        <!-- The main heading of the webpage -->
-        <h1>Budget App</h1>
+        <h1>Budget App</h1> <!-- Main heading -->
     </header>
     <main>
-        <!-- Link to This Month's Bills -->
-        <a href="{{ url_for('month_view', year=now.year, month=now.month) }}">Update Bills</a>
-        <!-- Table of entries due this pay period -->
+        <a href="{{ url_for('month_view', year=now.year, month=now.month) }}">Update Bills</a> <!-- Link to update bills -->
+
+        <!-- Section for bills due this pay period -->
         <h2>Due This Pay Period ({{ this_pay_period_start.date() }} - {{ this_pay_period_end.date() }})</h2>
         <table class="amountTotalTable">
             <tr>
@@ -26,19 +22,19 @@
             {% for bill in bills %}
                 {% if this_pay_period_start.date() <= bill.due_date <= this_pay_period_end.date() %}
                     <tr>
-                        <td>{{ bill.due_date }}</td>
-                        <td>{{ bill.name }}</td>
-                        <td>{{ bill.amount_due }}</td>
+                        <td>{{ bill.due_date }}</td> <!-- Bill due date -->
+                        <td>{{ bill.name }}</td> <!-- Bill name -->
+                        <td>{{ bill.amount_due }}</td> <!-- Bill amount due -->
                     </tr>
                 {% endif %}
             {% endfor %}
             <tr>
                 <td colspan="2">Total Due This Pay Period</td>
-                <td id="totalAmountCell">{{ total_due_this_pay_period }}</td>
+                <td id="totalAmountCell">{{ total_due_this_pay_period }}</td> <!-- Total due this pay period -->
             </tr>
         </table>
 
-        <!-- Table of entries due next pay period -->
+        <!-- Section for bills due next pay period -->
         <h2>Due Next Pay Period ({{ next_pay_period_start.date() }} - {{ next_pay_period_end.date() }})</h2>
         <table class="amountTotalTable">
             <tr>
@@ -49,23 +45,21 @@
             {% for bill in bills %}
                 {% if next_pay_period_start.date() <= bill.due_date <= next_pay_period_end.date() %}
                     <tr>
-                        <td>{{ bill.due_date }}</td>
-                        <td>{{ bill.name }}</td>
-                        <td>{{ bill.amount_due }}</td>
+                        <td>{{ bill.due_date }}</td> <!-- Bill due date -->
+                        <td>{{ bill.name }}</td> <!-- Bill name -->
+                        <td>{{ bill.amount_due }}</td> <!-- Bill amount due -->
                     </tr>
                 {% endif %}
             {% endfor %}
             <tr>
                 <td colspan="2">Total Due Next Pay Period</td>
-                <td id="totalAmountCell">{{ total_due_next_pay_period }}</td>
+                <td id="totalAmountCell">{{ total_due_next_pay_period }}</td> <!-- Total due next pay period -->
             </tr>
         </table>
     </main>
     <footer>
-        <!-- Footer information -->
-        <p>© 2024 My Budget</p>
+        <p>© 2024 My Budget</p> <!-- Footer copyright -->
     </footer>
-    <!-- Link to the JavaScript file -->
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script> <!-- JavaScript file link -->
 </body>
 </html>
