@@ -1,5 +1,5 @@
 # First stage: build
-FROM python:3.10.12-slim-buster as build
+FROM python:3.10.12-slim-buster
 
 # Set the working directory
 WORKDIR /app
@@ -7,17 +7,8 @@ WORKDIR /app
 # Add the current directory contents into the container at /app
 ADD . /app
 
-# Install any needed packages specified in requirements.txt
+# # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
-
-# Second stage: runtime
-FROM python:3.10.12-slim-buster
-
-# Set the working directory
-WORKDIR /app
-
-# Copy only the dependencies installation from the 1st stage image
-COPY --from=build /usr/local /usr/local
 
 # Ensure data directory exists
 RUN mkdir -p /app/data
