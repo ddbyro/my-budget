@@ -78,12 +78,21 @@ def home():
         next_pay_period_start = datetime.datetime(now.year, now.month + 1, 1)
         next_pay_period_end = datetime.datetime(now.year, now.month + 1, 15)
 
+    # Calculate the total amount due this pay period
+    total_due_this_pay_period = sum(bill.amount_due for bill in bills if this_pay_period_start.date() <= bill.due_date <= this_pay_period_end.date())
+
+    # Calculate the total amount due next pay period
+    total_due_next_pay_period = sum(bill.amount_due for bill in bills if next_pay_period_start.date() <= bill.due_date <= next_pay_period_end.date())
+    
+
     # Render the index.html template and pass the bills and pay period dates to it
     return render_template('index.html', bills=bills, now=now,
                             this_pay_period_start=this_pay_period_start,
                             this_pay_period_end=this_pay_period_end, 
                             next_pay_period_start=next_pay_period_start, 
-                            next_pay_period_end=next_pay_period_end)
+                            next_pay_period_end=next_pay_period_end,
+                            total_due_this_pay_period=total_due_this_pay_period,
+                            total_due_next_pay_period=total_due_next_pay_period)
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):

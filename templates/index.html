@@ -32,6 +32,10 @@
                     </tr>
                 {% endif %}
             {% endfor %}
+            <tr>
+                <td colspan="2">Total Due This Pay Period</td>
+                <td>{{ total_due_this_pay_period }}</td>
+            </tr>
         </table>
 
         <!-- Table of entries due next pay period -->
@@ -51,8 +55,11 @@
                     </tr>
                 {% endif %}
             {% endfor %}
+            <tr>
+                <td colspan="2">Total Due Next Pay Period</td>
+                <td>{{ total_due_next_pay_period }}</td>
+            </tr>
         </table>
- 
     </main>
     <footer>
         <!-- Footer information -->
