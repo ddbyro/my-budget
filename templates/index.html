@@ -17,7 +17,7 @@
         <a href="{{ url_for('month_view', year=now.year, month=now.month) }}">Update Bills</a>
         <!-- Table of entries due this pay period -->
         <h2>Due This Pay Period ({{ this_pay_period_start.date() }} - {{ this_pay_period_end.date() }})</h2>
-        <table>
+        <table class="amountTotalTable">
             <tr>
                 <th>Due Date</th>
                 <th>Bill Name</th>
@@ -34,13 +34,13 @@
             {% endfor %}
             <tr>
                 <td colspan="2">Total Due This Pay Period</td>
-                <td>{{ total_due_this_pay_period }}</td>
+                <td id="totalAmountCell">{{ total_due_this_pay_period }}</td>
             </tr>
         </table>
 
         <!-- Table of entries due next pay period -->
         <h2>Due Next Pay Period ({{ next_pay_period_start.date() }} - {{ next_pay_period_end.date() }})</h2>
-        <table>
+        <table class="amountTotalTable">
             <tr>
                 <th>Due Date</th>
                 <th>Bill Name</th>
@@ -57,7 +57,7 @@
             {% endfor %}
             <tr>
                 <td colspan="2">Total Due Next Pay Period</td>
-                <td>{{ total_due_next_pay_period }}</td>
+                <td id="totalAmountCell">{{ total_due_next_pay_period }}</td>
             </tr>
         </table>
     </main>

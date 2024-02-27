@@ -64,3 +64,10 @@ th, td {
     gap: 10px;
     align-items: center;
 }
+th {
+    background-color: grey;
+    color: white;  /* You might want to change the text color to ensure it's readable on the grey background */
+}
+table.amountTotalTable td#totalAmountCell {
+    background-color: yellow;
+}
