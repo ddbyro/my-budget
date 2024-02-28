@@ -24,3 +24,6 @@ document.getElementById('entryForm').addEventListener('submit', function(event) 
         event.preventDefault();
     }
 });
+window.addEventListener('DOMContentLoaded', (event) => {
+    flatpickr("#due_date", {});
+});

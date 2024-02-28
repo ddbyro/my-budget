@@ -3,6 +3,8 @@
 <head>
     <title>Monthly Bills</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}"> <!-- Stylesheet link -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 <body>
     <form method="POST"> <!-- Form for adding a new entry -->
@@ -69,5 +71,6 @@
     <footer>
         <p>© 2024 My Budget</p> <!-- Footer information -->
     </footer>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script> <!-- Link to the JavaScript file -->
 </body>
 </html>

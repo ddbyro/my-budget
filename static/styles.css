@@ -23,11 +23,51 @@ input, button {
     margin: 5px 0; /* Add margin to the top and bottom of the input and button */
 }
 
+.caution-button {
+    background-color: #f44336; /* Set the background color of the cancel button */
+    color: white; /* Set the text color of the cancel button */
+    border: none; /* Remove the border of the cancel button */
+    padding: 15px 32px; /* Add padding to the cancel button */
+    text-align: center; /* Center the text of the cancel button */
+    text-decoration: none; /* Remove the text decoration of the cancel button */
+    display: inline-block; /* Display the cancel button as inline-block */
+    font-size: 16px; /* Set the font size of the cancel button */
+    margin: 4px 2px; /* Add margin around the cancel button */
+    cursor: pointer; /* Change the cursor to a pointer when hovering over the cancel button */
+    transition: background-color 0.3s ease; /* Add a transition to the background color of the cancel button */
+}
+
+.caution-button:hover {
+    background-color: #e60000; /* Change the background color when hovered */
+}
+
+.go-back-button {
+    background-color: #717271; /* Set the background color of the go back button */
+    color: white; /* Set the text color of the go back button */
+    border: none; /* Remove the border of the go back button */
+    padding: 15px 32px; /* Add padding to the go back button */
+    text-align: center; /* Center the text of the go back button */
+    text-decoration: none; /* Remove the text decoration of the go back button */
+    display: inline-block; /* Display the go back button as inline-block */
+    font-size: 16px; /* Set the font size of the go back button */
+    margin: 4px 2px; /* Add margin around the go back button */
+    cursor: pointer; /* Change the cursor to a pointer when hovering over the go back button */
+    transition: background-color 0.3s ease; /* Add a transition to the background color of the go back button */
+}
+
 /* Button styling */
 button {
-    background-color: #4CAF50; /* Set the background color of the button */
-    color: white; /* Set the text color of the button */
-    cursor: pointer; /* Change the cursor to a pointer when hovering over the button */
+    background-color: #4CAF50; /* Set the background color of the submit button */
+    color: white; /* Set the text color of the submit button */
+    border: none; /* Remove the border of the submit button */
+    padding: 15px 32px; /* Add padding to the submit button */
+    text-align: center; /* Center the text of the submit button */
+    text-decoration: none; /* Remove the text decoration of the submit button */
+    display: inline-block; /* Display the submit button as inline-block */
+    font-size: 16px; /* Set the font size of the submit button */
+    margin: 4px 2px; /* Add margin around the submit button */
+    cursor: pointer; /* Change the cursor to a pointer when hovering over the submit button */
+    transition: background-color 0.3s ease; /* Add a transition to the background color of the submit button */
 }
 
 /* Button hover styling */

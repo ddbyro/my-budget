@@ -23,7 +23,7 @@
                 {% if this_pay_period_start.date() <= bill.due_date <= this_pay_period_end.date() %}
                     <tr>
                         <td>{{ bill.due_date }}</td> <!-- Bill due date -->
-                        <td>{{ bill.name }}</td> <!-- Bill name -->
+                        <td>{{ bill.bill_name }}</td> <!-- Bill name -->
                         <td>{{ bill.amount_due }}</td> <!-- Bill amount due -->
                     </tr>
                 {% endif %}

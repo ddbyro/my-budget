@@ -12,9 +12,9 @@
         <p>Are you sure you want to delete this entry?</p> <!-- Confirmation message -->
         <p>{{ entry.due_date }} - {{ entry.bill_name }} - {{ entry.amount_due }}</p> <!-- Display entry details -->
         <form method="POST" action="{{ url_for('delete', id=entry.id) }}"> <!-- Form for deleting an entry -->
-            <button type="submit">Yes, delete it</button> <!-- Confirmation button -->
+            <button class="caution-button" type="submit">Yes, delete it</button> <!-- Confirmation button -->
         </form>
-        <button onclick="window.history.back()">No, go back</button> <!-- Button to go back -->
+        <button class="go-back-button" onclick="window.history.back()">No, go back</button> <!-- Button to go back -->
     </main>
     <footer>
         <p>© 2024 My Budget</p> <!-- Footer of the page -->
