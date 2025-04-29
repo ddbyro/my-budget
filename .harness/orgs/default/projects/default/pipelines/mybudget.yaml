@@ -35,7 +35,7 @@ pipeline:
                   identifier: BuildAndPushDockerRegistry_1
                   spec:
                     connectorRef: harborcontainershl
-                    repo: test-budget
+                    repo: admin/test-budget
                     tags:
                       - 3.2.1
                     caching: true
