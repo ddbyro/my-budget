@@ -39,3 +39,4 @@ pipeline:
                     tags:
                       - 3.2.1
                     caching: true
+                    dockerfile: Containerfile
