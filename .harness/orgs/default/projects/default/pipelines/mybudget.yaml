@@ -12,31 +12,25 @@ pipeline:
         build: <+input>
   stages:
     - stage:
-        name: build
-        identifier: build
+        name: a
+        identifier: a
         description: ""
-        type: CI
+        type: Custom
         spec:
-          cloneCodebase: true
-          caching:
-            enabled: true
-            override: true
-          platform:
-            os: Linux
-            arch: Amd64
-          runtime:
-            type: Docker
-            spec: {}
           execution:
             steps:
               - step:
-                  type: BuildAndPushDockerRegistry
-                  name: BuildAndPushDockerRegistry_1
-                  identifier: BuildAndPushDockerRegistry_1
+                  type: ShellScript
+                  name: ShellScript_1
+                  identifier: ShellScript_1
                   spec:
-                    connectorRef: harborcontainershl
-                    repo: harbor.dbyron.net/containers/test-budget
-                    tags:
-                      - 3.2.1
-                    caching: true
-                    dockerfile: Containerfile
+                    shell: Bash
+                    executionTarget: {}
+                    source:
+                      type: Inline
+                      spec:
+                        script: docker ps
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+        tags: {}
