@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Budget — {{ month_names[month-1] }} {{ year }}, Period {{ period }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat:wght@400;600;700&family=Courier+Prime:wght@400;700&family=Dancing+Script:wght@400;700&family=Indie+Flower&family=Kalam:wght@400;700&family=Lato:wght@400;700&family=Libre+Baskerville:wght@400;700&family=Merriweather:wght@400;700&family=Montserrat:wght@400;700&family=Nunito:wght@400;700&family=Open+Sans:wght@400;700&family=Pacifico&family=Patrick+Hand&family=Permanent+Marker&family=Playfair+Display:wght@400;700&family=Poppins:wght@400;700&family=Roboto:wght@400;700&family=Shadows+Into+Light&family=Source+Code+Pro:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        :root { --font-main: '{{ font_family }}', sans-serif; }
+        body  { font-family: var(--font-main); }
+    </style>
+</head>
+<body>
+    <div class="notepad-wrapper">
+
+        <!-- Spiral binding -->
+        <div class="spiral-binding">
+            {% for i in range(13) %}
+            <div class="spiral-ring"></div>
+            {% endfor %}
+        </div>
+
+        <!-- Page -->
+        <div class="notepad-page">
+
+            <!-- Header -->
+            <div class="page-header">
+                <div class="font-picker-wrap">
+                    <button class="font-picker-btn" id="font-picker-toggle" title="Change font">Aa</button>
+                    <div class="font-picker-popup hidden" id="font-picker-popup">
+                        <div class="font-picker-title">Choose a font</div>
+                    </div>
+                </div>
+                <div class="page-title"
+                     id="budget-name"
+                     contenteditable="false"
+                     spellcheck="false"
+                     title="Click to rename">{{ budget_name }}</div>
+                <div class="cal-trigger-wrap">
+                    <div class="period-meta" id="cal-toggle" role="button" tabindex="0"
+                         title="Open calendar">
+                        <span class="period-label">
+                            {{ month_names[month-1] }} {{ year }} &mdash;
+                            {% if period == 1 %}1st–15th{% else %}16th–{{ end_date.day }}th{% endif %}
+                        </span>
+                        <span class="period-dates">
+                            ({{ start_date.strftime('%b %d') }} – {{ end_date.strftime('%b %d, %Y') }})
+                        </span>
+                    </div>
+
+                    <!-- Calendar popup -->
+                    <div class="calendar-popup hidden" id="calendar-popup">
+                        <div class="cal-header">
+                            <button class="cal-nav" id="cal-prev">&#8249;</button>
+                            <span class="cal-month-label" id="cal-month-label"></span>
+                            <button class="cal-nav" id="cal-next">&#8250;</button>
+                        </div>
+                        <div class="cal-weekdays">
+                            <span>Su</span><span>Mo</span><span>Tu</span>
+                            <span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+                        </div>
+                        <div class="cal-grid" id="cal-grid"></div>
+                        <div class="cal-legend">
+                            <span class="legend-p1">&#9632; 1st–15th</span>
+                            <span class="legend-p2">&#9632; 16th–end</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bill list -->
+            <div class="bills-section">
+                {% for entry in entries %}
+                <div class="bill-row">
+                    <span class="bill-date">{{ entry.due_date.strftime('%b %d') }}</span>
+                    <span class="bill-name">{{ entry.bill_name }}</span>
+                    <span class="bill-amount">${{ "%.2f"|format(entry.amount_due) }}</span>
+                    <span class="bill-actions">
+                        <a href="{{ url_for('edit', id=entry.id) }}" class="action-link edit">edit</a>
+                        <button class="action-link hist-btn"
+                                data-name="{{ entry.bill_name }}"
+                                data-year="{{ year }}"
+                                data-month="{{ month }}"
+                                data-period="{{ period }}"
+                                title="Compare to previous periods">hist</button>
+                        <a href="{{ url_for('delete', id=entry.id) }}" class="action-link delete" title="Delete">×</a>
+                    </span>
+                    <div class="hist-popup hidden"></div>
+                </div>
+                {% else %}
+                <div class="empty-note">No bills recorded for this pay period.</div>
+                {% endfor %}
+            </div>
+
+            <!-- Total -->
+            <div class="total-row">
+                <span>Total Due</span>
+                <span class="total-amount">${{ "%.2f"|format(total_due) }}</span>
+            </div>
+
+            <!-- Add bill -->
+            <div class="add-section">
+                <div class="add-title">+ add a bill</div>
+                <form method="POST" class="add-form">
+                    <input type="date"
+                           name="due_date"
+                           min="{{ start_date }}"
+                           max="{{ end_date }}"
+                           value="{{ start_date }}"
+                           required>
+                    <input type="text"
+                           name="bill_name"
+                           placeholder="Bill name"
+                           list="bill-suggestions"
+                           autocomplete="off"
+                           required>
+                    <datalist id="bill-suggestions">
+                        {% for name in bill_names %}
+                        <option value="{{ name }}">
+                        {% endfor %}
+                    </datalist>
+                    <input type="number"
+                           name="amount_due"
+                           placeholder="Amount (optional)"
+                           step="0.01"
+                           min="0">
+                    <button type="submit">Add</button>
+                </form>
+            </div>
+
+        </div><!-- /.notepad-page -->
+
+        <!-- Page navigation -->
+        <div class="page-nav">
+            <a href="{{ url_for('pay_period_view', year=prev_year, month=prev_month, period=prev_period) }}"
+               class="nav-btn prev-btn">&#8249; Prev</a>
+
+            <span class="page-indicator">
+                {{ month_names[month-1][:3] }} {{ year }} &bull; {{ "1st–15th" if period == 1 else "16th–end" }}
+            </span>
+
+            <a href="{{ url_for('pay_period_view', year=next_year, month=next_month, period=next_period) }}"
+               class="nav-btn next-btn">Next &#8250;</a>
+        </div>
+
+    <script>
+    // ── Font picker ──────────────────────────────────────────────────────
+    (function () {
+        const FONTS = [
+            { group: 'Handwritten' },
+            { name: 'Caveat',              label: 'Caveat'              },
+            { name: 'Kalam',               label: 'Kalam'               },
+            { name: 'Patrick Hand',        label: 'Patrick Hand'        },
+            { name: 'Indie Flower',        label: 'Indie Flower'        },
+            { name: 'Architects Daughter', label: 'Architects Daughter' },
+            { name: 'Shadows Into Light',  label: 'Shadows Into Light'  },
+            { name: 'Dancing Script',      label: 'Dancing Script'      },
+            { name: 'Pacifico',            label: 'Pacifico'            },
+            { name: 'Permanent Marker',    label: 'Permanent Marker'    },
+            { name: 'Special Elite',       label: 'Special Elite'       },
+            { group: 'Sans-serif' },
+            { name: 'Roboto',              label: 'Roboto'              },
+            { name: 'Open Sans',           label: 'Open Sans'           },
+            { name: 'Lato',                label: 'Lato'                },
+            { name: 'Montserrat',          label: 'Montserrat'          },
+            { name: 'Poppins',             label: 'Poppins'             },
+            { name: 'Nunito',              label: 'Nunito'              },
+            { group: 'Serif' },
+            { name: 'Playfair Display',    label: 'Playfair Display'    },
+            { name: 'Merriweather',        label: 'Merriweather'        },
+            { name: 'Libre Baskerville',   label: 'Libre Baskerville'   },
+            { group: 'Monospace' },
+            { name: 'Courier Prime',       label: 'Courier Prime'       },
+            { name: 'Source Code Pro',     label: 'Source Code Pro'     },
+        ];
+
+        let current = '{{ font_family }}';
+
+        const toggle = document.getElementById('font-picker-toggle');
+        const popup  = document.getElementById('font-picker-popup');
+
+        // Build option list
+        FONTS.forEach(function (f) {
+            if (f.group) {
+                const hdr = document.createElement('div');
+                hdr.className = 'font-group-label';
+                hdr.textContent = f.group;
+                popup.appendChild(hdr);
+                return;
+            }
+            const btn = document.createElement('button');
+            btn.className = 'font-option' + (f.name === current ? ' active' : '');
+            btn.style.fontFamily = "'" + f.name + "', sans-serif";
+            btn.textContent = f.label;
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                current = f.name;
+                document.documentElement.style.setProperty('--font-main', "'" + f.name + "', sans-serif");
+                document.querySelectorAll('.font-option').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                fetch('/settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'key=font_family&value=' + encodeURIComponent(f.name)
+                });
+                popup.classList.add('hidden');
+            });
+            popup.appendChild(btn);
+        });
+
+        toggle.addEventListener('click', function (e) {
+            e.stopPropagation();
+            popup.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!popup.contains(e.target) && e.target !== toggle) {
+                popup.classList.add('hidden');
+            }
+        });
+    })();
+
+    // ── Bill history popups ──────────────────────────────────────────────
+    (function () {
+        function closeAll() {
+            document.querySelectorAll('.hist-popup').forEach(p => p.classList.add('hidden'));
+        }
+
+        document.querySelectorAll('.hist-btn').forEach(function (btn) {
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                const row   = btn.closest('.bill-row');
+                const popup = row.querySelector('.hist-popup');
+
+                if (!popup.classList.contains('hidden')) { closeAll(); return; }
+                closeAll();
+
+                popup.innerHTML = '<span class="hist-loading">loading\u2026</span>';
+                popup.classList.remove('hidden');
+
+                const params = new URLSearchParams({
+                    name:   btn.dataset.name,
+                    year:   btn.dataset.year,
+                    month:  btn.dataset.month,
+                    period: btn.dataset.period
+                });
+
+                fetch('/bill-history?' + params)
+                    .then(r => r.json())
+                    .then(function (data) {
+                        function row(item) {
+                            const amt = item.amount !== null
+                                ? '$' + item.amount.toFixed(2)
+                                : '<span class="hist-none">not found</span>';
+                            return '<div class="hist-row">'
+                                + '<a href="' + item.url + '" class="hist-period">' + item.label + '</a>'
+                                + '<span class="hist-amount">' + amt + '</span>'
+                                + '</div>';
+                        }
+                        popup.innerHTML =
+                            '<div class="hist-title">' + btn.dataset.name + '</div>'
+                            + row(data.last_month)
+                            + row(data.last_year);
+                    });
+            });
+        });
+
+        document.addEventListener('click', closeAll);
+    })();
+
+    // ── Budget name inline edit ──────────────────────────────────────────
+    (function () {
+        const el = document.getElementById('budget-name');
+        let original = el.textContent.trim();
+
+        el.addEventListener('click', function () {
+            el.contentEditable = 'true';
+            el.classList.add('editing');
+            el.focus();
+            // select all text
+            const range = document.createRange();
+            range.selectNodeContents(el);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+        });
+
+        function save() {
+            const value = el.textContent.trim();
+            el.contentEditable = 'false';
+            el.classList.remove('editing');
+            if (!value) { el.textContent = original; return; }
+            if (value === original) return;
+            original = value;
+            fetch('/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'key=budget_name&value=' + encodeURIComponent(value)
+            });
+        }
+
+        el.addEventListener('blur', save);
+
+        el.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); save(); }
+            if (e.key === 'Escape') {
+                el.textContent = original;
+                el.contentEditable = 'false';
+                el.classList.remove('editing');
+            }
+        });
+    })();
+
+    // ── Calendar ─────────────────────────────────────────────────────────
+    (function () {
+        const MONTH_NAMES = {{ month_names | tojson }};
+        const ACTIVE_YEAR   = {{ year }};
+        const ACTIVE_MONTH  = {{ month }};
+        const ACTIVE_PERIOD = {{ period }};
+
+        let calYear  = ACTIVE_YEAR;
+        let calMonth = ACTIVE_MONTH;
+
+        const popup     = document.getElementById('calendar-popup');
+        const toggle    = document.getElementById('cal-toggle');
+        const grid      = document.getElementById('cal-grid');
+        const label     = document.getElementById('cal-month-label');
+
+        function render() {
+            label.textContent = MONTH_NAMES[calMonth - 1] + ' ' + calYear;
+            grid.innerHTML = '';
+
+            const firstDow    = new Date(calYear, calMonth - 1, 1).getDay();
+            const daysInMonth = new Date(calYear, calMonth, 0).getDate();
+
+            for (let i = 0; i < firstDow; i++) {
+                const blank = document.createElement('span');
+                blank.className = 'cal-day empty';
+                grid.appendChild(blank);
+            }
+
+            for (let d = 1; d <= daysInMonth; d++) {
+                const p    = d <= 15 ? 1 : 2;
+                const cell = document.createElement('span');
+                cell.className = 'cal-day p' + p;
+                cell.textContent = d;
+
+                const isActive = calYear === ACTIVE_YEAR &&
+                                 calMonth === ACTIVE_MONTH &&
+                                 p === ACTIVE_PERIOD;
+                if (isActive) cell.classList.add('active');
+
+                cell.addEventListener('click', function () {
+                    window.location.href = '/period/' + calYear + '/' + calMonth + '/' + p;
+                });
+                grid.appendChild(cell);
+            }
+        }
+
+        toggle.addEventListener('click', function (e) {
+            e.stopPropagation();
+            popup.classList.toggle('hidden');
+            if (!popup.classList.contains('hidden')) render();
+        });
+
+        document.getElementById('cal-prev').addEventListener('click', function (e) {
+            e.stopPropagation();
+            calMonth--;
+            if (calMonth < 1) { calMonth = 12; calYear--; }
+            render();
+        });
+
+        document.getElementById('cal-next').addEventListener('click', function (e) {
+            e.stopPropagation();
+            calMonth++;
+            if (calMonth > 12) { calMonth = 1; calYear++; }
+            render();
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!popup.contains(e.target) && e.target !== toggle) {
+                popup.classList.add('hidden');
+            }
+        });
+    })();
+    </script>
+
+    </div><!-- /.notepad-wrapper -->
+</body>
+</html>

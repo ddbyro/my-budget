@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Budget — Edit Bill</title>
+    <title>{{ budget_name }} — Edit Bill</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat:wght@400;600;700&family=Courier+Prime:wght@400;700&family=Dancing+Script:wght@400;700&family=Indie+Flower&family=Kalam:wght@400;700&family=Lato:wght@400;700&family=Libre+Baskerville:wght@400;700&family=Merriweather:wght@400;700&family=Montserrat:wght@400;700&family=Nunito:wght@400;700&family=Open+Sans:wght@400;700&family=Pacifico&family=Patrick+Hand&family=Permanent+Marker&family=Playfair+Display:wght@400;700&family=Poppins:wght@400;700&family=Roboto:wght@400;700&family=Shadows+Into+Light&family=Source+Code+Pro:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>:root { --font-main: '{{ font_family }}', sans-serif; } body { font-family: var(--font-main); }</style>
 </head>
 <body>
     <div class="notepad-wrapper">
@@ -35,13 +36,20 @@
                 <div class="form-field">
                     <label for="amount_due">Amount Due</label>
                     <input type="number" id="amount_due" name="amount_due"
-                           value="{{ entry.amount_due }}" step="0.01" min="0" required>
+                           value="{{ entry.amount_due }}" step="0.01" min="0"
+                           placeholder="Amount (optional)">
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn-primary">Save</button>
                     <a href="javascript:history.back()" class="btn-ghost">Cancel</a>
                 </div>
             </form>
+        </div>
+
+        <div class="page-nav">
+            <a href="javascript:history.back()" class="nav-btn">&#8249; Back</a>
+            <span class="page-indicator">{{ budget_name }}</span>
+            <span class="nav-btn" style="visibility:hidden;">placeholder</span>
         </div>
 
     </div>
