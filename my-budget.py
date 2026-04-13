@@ -233,6 +233,9 @@ def pay_period_view(year, month, period):
     prev_year, prev_month, prev_period = get_adjacent_period(year, month, period, 'prev')
     next_year, next_month, next_period = get_adjacent_period(year, month, period, 'next')
 
+    bill_names = [r[0] for r in db.session.query(Entry.bill_name)
+                  .distinct().order_by(Entry.bill_name).all()]
+
     return render_template('pay_period.html',
                            entries=entries,
                            year=year, month=month, period=period,
@@ -241,4 +244,5 @@ def pay_period_view(year, month, period):
                            prev_year=prev_year, prev_month=prev_month, prev_period=prev_period,
                            next_year=next_year, next_month=next_month, next_period=next_period,
                            month_names=month_names,
-                           budget_name=get_config('budget_name', 'My Budget'))
+                           budget_name=get_config('budget_name', 'My Budget'),
+                           bill_names=bill_names)
