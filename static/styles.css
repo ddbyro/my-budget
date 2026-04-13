@@ -1,87 +1,602 @@
-/* General body styling */
+/* ── Reset ─────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Body / desk ───────────────────────────────────────────────────────── */
 body {
-    font-family: Arial, sans-serif; /* Set the font for the body */
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px 60px;
+    background-color: #2e1f0e;
+    background-image:
+        repeating-linear-gradient(
+            90deg,
+            rgba(255,255,255,0.02) 0px,
+            rgba(255,255,255,0.02) 1px,
+            transparent 1px,
+            transparent 40px
+        ),
+        repeating-linear-gradient(
+            0deg,
+            rgba(255,255,255,0.02) 0px,
+            rgba(255,255,255,0.02) 1px,
+            transparent 1px,
+            transparent 40px
+        );
+    font-family: 'Caveat', 'Patrick Hand', 'Comic Sans MS', cursive;
 }
 
-/* Form styling */
-form {
-    margin: auto; /* Center the form */
-    width: 50%; /* Set the width of the form */
-    padding: 10px; /* Add padding around the form */
+/* ── Notepad wrapper ───────────────────────────────────────────────────── */
+.notepad-wrapper {
+    width: 100%;
+    max-width: 660px;
 }
 
-/* Label styling */
-label {
-    display: block; /* Display label as block */
-    margin: 10px 0; /* Add margin to the top and bottom of the label */
+/* ── Spiral binding ────────────────────────────────────────────────────── */
+.spiral-binding {
+    background: #b0b0b0;
+    background-image: linear-gradient(180deg, #d8d8d8 0%, #a0a0a0 40%, #888 100%);
+    border-radius: 6px 6px 0 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 6px 24px;
+    position: relative;
+    z-index: 2;
 }
 
-/* Input and button styling */
-input, button {
-    width: 100%; /* Set the width of the input and button */
-    padding: 10px; /* Add padding to the input and button */
-    margin: 5px 0; /* Add margin to the top and bottom of the input and button */
+.spiral-ring {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #2e1f0e;
+    border: 3px solid #777;
+    box-shadow: inset 0 2px 3px rgba(255,255,255,0.15), 0 1px 3px rgba(0,0,0,0.5);
+    position: relative;
 }
 
-/* Button styling */
-button {
-    background-color: #4CAF50; /* Set the background color of the button */
-    color: white; /* Set the text color of the button */
-    cursor: pointer; /* Change the cursor to a pointer when hovering over the button */
+.spiral-ring::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #1a0f06;
 }
 
-/* Button hover styling */
-button:hover {
-    background-color: #45a049; /* Change the background color of the button when hovering */
+/* ── Notepad page ──────────────────────────────────────────────────────── */
+.notepad-page {
+    background-color: #fffef2;
+    background-image:
+        /* red margin line */
+        linear-gradient(
+            90deg,
+            transparent 67px,
+            #f0b0b0 67px,
+            #f0b0b0 69px,
+            transparent 69px
+        ),
+        /* blue ruled lines */
+        repeating-linear-gradient(
+            transparent,
+            transparent 31px,
+            #c8ddf0 31px,
+            #c8ddf0 32px
+        );
+    padding: 24px 36px 36px 88px;
+    min-height: 560px;
+    box-shadow:
+        0 6px 20px rgba(0,0,0,0.5),
+        4px 4px 0 rgba(0,0,0,0.15),
+        inset 0 0 40px rgba(0,0,0,0.04);
+    position: relative;
 }
 
-/* Submit button styling */
-.submit-button {
-    background-color: #4CAF50; /* Set the background color of the submit button */
-    color: white; /* Set the text color of the submit button */
-    border: none; /* Remove the border of the submit button */
-    padding: 15px 32px; /* Add padding to the submit button */
-    text-align: center; /* Center the text of the submit button */
-    text-decoration: none; /* Remove the text decoration of the submit button */
-    display: inline-block; /* Display the submit button as inline-block */
-    font-size: 16px; /* Set the font size of the submit button */
-    margin: 4px 2px; /* Add margin around the submit button */
-    cursor: pointer; /* Change the cursor to a pointer when hovering over the submit button */
-    transition: background-color 0.3s ease; /* Add a transition to the background color of the submit button */
+/* page top edge shadow under spiral */
+.notepad-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.1), transparent);
 }
 
-/* Submit button hover styling */
-.submit-button:hover {
-    background-color: #45a049; /* Change the background color of the submit button when hovering */
+/* ── Page header ───────────────────────────────────────────────────────── */
+.page-header {
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #c8ddf0;
+    line-height: 32px;
 }
 
-/* Table styling */
-table, .table-style {
-    border-collapse: collapse; /* Collapse the borders of the table */
-    width: 100%; /* Set the width of the table */
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e3a5c;
+    letter-spacing: 1px;
+    line-height: 32px;
+    cursor: text;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.15s;
+    display: inline-block;
+    min-width: 80px;
+    outline: none;
 }
 
-/* Table cell styling */
-th, td, .cell-style {
-    border: 1px solid black; /* Add a border to the table cells */
-    padding: 8px; /* Add padding to the table cells */
-    text-align: left; /* Align the text to the left in the table cells */
+.page-title:hover {
+    border-bottom-color: #c8ddf0;
 }
 
-/* Table header styling */
-th {
-    background-color: grey; /* Set the background color of the table headers */
-    color: white; /* Set the text color of the table headers */
+.page-title.editing {
+    border-bottom-color: #1e3a5c;
 }
 
-/* Specific table cell styling */
-table.amountTotalTable td#totalAmountCell {
-    background-color: yellow; /* Set the background color of the specific table cell */
+.period-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    line-height: 32px;
+    /* hover/click styles are in the calendar section below */
 }
 
-/* Dropdown container styling */
-.dropdown-container {
-    display: flex; /* Display the dropdown container as flex */
-    gap: 10px; /* Add a gap between the items in the dropdown container */
-    align-items: center; /* Align the items in the center of the dropdown container */
+.period-label {
+    font-size: 1.15rem;
+    color: #1e3a5c;
+    font-weight: 600;
+}
+
+.period-dates {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+/* ── Bill rows ─────────────────────────────────────────────────────────── */
+.bills-section {
+    margin-bottom: 0;
+}
+
+.bill-row {
+    display: grid;
+    grid-template-columns: 78px 1fr 90px 90px;
+    gap: 6px;
+    align-items: center;
+    height: 32px;
+    font-size: 1.2rem;
+    padding: 0 2px;
+    position: relative;
+}
+
+.bill-date { color: #888; font-size: 1rem; }
+.bill-name { color: #222; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.bill-amount { color: #1a6b1a; font-weight: 600; text-align: right; }
+
+.bill-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    padding-right: 4px;
+}
+
+.action-link {
+    text-decoration: none;
+    color: #aaa;
+    font-size: 1rem;
+    transition: color 0.15s;
+}
+
+.action-link:hover { color: #333; }
+.action-link.delete { color: #cc5555; font-size: 1.1rem; font-weight: 700; }
+.action-link.delete:hover { color: #aa2222; }
+
+.hist-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: 'Caveat', 'Patrick Hand', 'Comic Sans MS', cursive;
+    font-size: 1rem;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.15s;
+}
+.hist-btn:hover { color: #555; }
+
+/* ── History popup ─────────────────────────────────────────────────────── */
+.hist-popup {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 2px);
+    background: #fffef2;
+    border: 1px solid #c8ddf0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+    z-index: 50;
+    min-width: 230px;
+    font-family: 'Caveat', 'Patrick Hand', 'Comic Sans MS', cursive;
+}
+
+.hist-popup.hidden { display: none; }
+
+.hist-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1e3a5c;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #e8e8d8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hist-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.05rem;
+    padding: 3px 0;
+    gap: 12px;
+}
+
+.hist-period {
+    color: #555;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.hist-period:hover { color: #1e3a5c; text-decoration: underline; }
+
+.hist-amount { color: #1a6b1a; font-weight: 600; }
+.hist-none   { color: #bbb; font-style: italic; font-weight: 400; }
+.hist-loading { color: #bbb; font-style: italic; font-size: 1rem; }
+
+.empty-note {
+    height: 32px;
+    line-height: 32px;
+    color: #ccc;
+    font-style: italic;
+    font-size: 1.1rem;
+}
+
+/* ── Total row ─────────────────────────────────────────────────────────── */
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 32px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1e3a5c;
+    border-top: 2px solid #c8ddf0;
+    margin-top: 2px;
+}
+
+.total-amount { color: #1a6b1a; }
+
+/* ── Add bill form ─────────────────────────────────────────────────────── */
+.add-section {
+    margin-top: 36px;
+}
+
+.add-title {
+    font-size: 1.05rem;
+    color: #aaa;
+    font-weight: 400;
+    line-height: 32px;
+    margin-bottom: 4px;
+}
+
+.add-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+.add-form input {
+    font-family: 'Caveat', 'Patrick Hand', 'Comic Sans MS', cursive;
+    font-size: 1.15rem;
+    border: none;
+    border-bottom: 1px solid #c0c0c0;
+    background: transparent;
+    padding: 2px 6px;
+    outline: none;
+    color: #222;
+    height: 32px;
+    transition: border-color 0.2s;
+}
+
+.add-form input:focus { border-bottom-color: #1e3a5c; }
+
+.add-form input[type="date"]   { width: 148px; }
+.add-form input[type="text"]   { flex: 1; min-width: 120px; }
+.add-form input[type="number"] { width: 100px; }
+
+.add-form button {
+    font-family: 'Caveat', 'Patrick Hand', 'Comic Sans MS', cursive;
+    font-size: 1.1rem;
+    background: #1e3a5c;
+    color: #fffef2;
+    border: none;
+    padding: 4px 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 32px;
+    transition: background 0.2s;
+}
+
+.add-form button:hover { background: #142a44; }
+
+/* ── Page navigation ───────────────────────────────────────────────────── */
+.page-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 18px;
+    padding: 0 4px;
+}
+
+.nav-btn {
+    font-family: 'Caveat', 'Patrick Hand', 'Comic Sans MS', cursive;
+    font-size: 1.15rem;
+    color: #d4c8b8;
+    text-decoration: none;
+    padding: 6px 18px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.06);
+    transition: background 0.2s, color 0.2s;
+    user-select: none;
+}
+
+.nav-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.nav-btn.disabled { opacity: 0.25; pointer-events: none; }
+
+.page-indicator {
+    color: rgba(212,200,184,0.7);
+    font-family: 'Caveat', 'Patrick Hand', 'Comic Sans MS', cursive;
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* ── Calendar popup ────────────────────────────────────────────────────── */
+.cal-trigger-wrap {
+    position: relative;
+}
+
+.period-meta {
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.15s;
+    padding: 0 4px;
+    margin: 0 -4px;
+}
+
+.period-meta:hover {
+    background: rgba(200,221,240,0.35);
+}
+
+.calendar-popup {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    background: #fffef2;
+    border: 1px solid #c8ddf0;
+    border-radius: 8px;
+    padding: 12px 14px 10px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    z-index: 100;
+    min-width: 230px;
+    font-family: 'Caveat', 'Patrick Hand', 'Comic Sans MS', cursive;
+}
+
+.calendar-popup.hidden { display: none; }
+
+/* small triangle pointing up toward the date label */
+.calendar-popup::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 24px;
+    border: 8px solid transparent;
+    border-bottom-color: #c8ddf0;
+    border-top: none;
+}
+
+.calendar-popup::after {
+    content: '';
+    position: absolute;
+    top: -7px;
+    left: 25px;
+    border: 7px solid transparent;
+    border-bottom-color: #fffef2;
+    border-top: none;
+    z-index: 1;
+}
+
+.cal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.cal-month-label {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1e3a5c;
+}
+
+.cal-nav {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: #1e3a5c;
+    font-family: inherit;
+    padding: 0 6px;
+    line-height: 1;
+    transition: color 0.15s;
+}
+
+.cal-nav:hover { color: #0a1f3c; }
+
+.cal-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 0.85rem;
+    color: #aaa;
+    margin-bottom: 4px;
+}
+
+.cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.cal-day {
+    text-align: center;
+    padding: 3px 1px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.12s;
+    line-height: 1.4;
+}
+
+.cal-day.empty { cursor: default; }
+
+.cal-day.p1 { color: #1a5c8a; }
+.cal-day.p2 { color: #1a6b1a; }
+
+.cal-day.p1:hover { background: #dceef9; }
+.cal-day.p2:hover { background: #d4f0d4; }
+
+.cal-day.active {
+    font-weight: 700;
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+}
+
+.cal-legend {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 8px;
+    font-size: 0.85rem;
+    border-top: 1px solid #e8e8d8;
+    padding-top: 6px;
+}
+
+.legend-p1 { color: #1a5c8a; }
+.legend-p2 { color: #1a6b1a; }
+
+/* ── Edit / delete pages ───────────────────────────────────────────────── */
+.form-page { padding: 24px 36px 36px 88px; }
+
+.form-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e3a5c;
+    line-height: 32px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #c8ddf0;
+    padding-bottom: 4px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 16px;
+}
+
+.form-field label {
+    font-size: 1rem;
+    color: #888;
+    line-height: 32px;
+}
+
+.form-field input {
+    font-family: 'Caveat', 'Patrick Hand', 'Comic Sans MS', cursive;
+    font-size: 1.2rem;
+    border: none;
+    border-bottom: 1px solid #c0c0c0;
+    background: transparent;
+    padding: 2px 6px;
+    outline: none;
+    color: #222;
+    height: 32px;
+    transition: border-color 0.2s;
+}
+
+.form-field input:focus { border-bottom-color: #1e3a5c; }
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    line-height: 32px;
+}
+
+.btn-primary {
+    font-family: 'Caveat', 'Patrick Hand', 'Comic Sans MS', cursive;
+    font-size: 1.1rem;
+    background: #1e3a5c;
+    color: #fffef2;
+    border: none;
+    padding: 6px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s;
+}
+
+.btn-primary:hover { background: #142a44; }
+
+.btn-danger {
+    font-family: 'Caveat', 'Patrick Hand', 'Comic Sans MS', cursive;
+    font-size: 1.1rem;
+    background: #8b2222;
+    color: #fffef2;
+    border: none;
+    padding: 6px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s;
+}
+
+.btn-danger:hover { background: #6a1a1a; }
+
+.btn-ghost {
+    font-family: 'Caveat', 'Patrick Hand', 'Comic Sans MS', cursive;
+    font-size: 1.1rem;
+    color: #888;
+    background: none;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: color 0.2s;
+}
+
+.btn-ghost:hover { color: #333; }
+
+.confirm-entry {
+    font-size: 1.2rem;
+    color: #333;
+    line-height: 32px;
+    margin-bottom: 8px;
+    border-left: 3px solid #f0b0b0;
+    padding-left: 12px;
 }

@@ -1,24 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Delete Entry</title> <!-- Page title -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}"> <!-- Link to the stylesheet -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Budget — Delete Bill</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <header>
-        <h1>Delete Entry</h1> <!-- Header of the page -->
-    </header>
-    <main>
-        <p>Are you sure you want to delete this entry?</p> <!-- Confirmation message -->
-        <p>{{ entry.due_date }} - {{ entry.bill_name }} - {{ entry.amount_due }}</p> <!-- Display entry details -->
-        <form method="POST" action="{{ url_for('delete', id=entry.id) }}"> <!-- Form for deleting an entry -->
-            <button type="submit">Yes, delete it</button> <!-- Confirmation button -->
-        </form>
-        <button onclick="window.history.back()">No, go back</button> <!-- Button to go back -->
-    </main>
-    <footer>
-        <p>© 2024 My Budget</p> <!-- Footer of the page -->
-    </footer>
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script> <!-- Link to the JavaScript file -->
+    <div class="notepad-wrapper">
+
+        <div class="spiral-binding">
+            {% for i in range(13) %}
+            <div class="spiral-ring"></div>
+            {% endfor %}
+        </div>
+
+        <div class="notepad-page form-page">
+            <div class="form-title">Delete Bill?</div>
+
+            <p class="confirm-entry">
+                {{ entry.due_date.strftime('%b %d, %Y') }}
+                &mdash; {{ entry.bill_name }}
+                &mdash; ${{ "%.2f"|format(entry.amount_due) }}
+            </p>
+
+            <p style="color:#888; font-size:1.1rem; line-height:32px;">
+                This cannot be undone.
+            </p>
+
+            <div class="form-actions" style="margin-top:32px;">
+                <form method="POST" action="{{ url_for('delete', id=entry.id) }}" style="display:inline;">
+                    <button type="submit" class="btn-danger">Yes, delete it</button>
+                </form>
+                <a href="javascript:history.back()" class="btn-ghost">No, go back</a>
+            </div>
+        </div>
+
+    </div>
 </body>
 </html>
