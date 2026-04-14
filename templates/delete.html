@@ -30,10 +30,10 @@
 
             <p class="form-warning">This cannot be undone.</p>
 
+            <form id="delete-form" method="POST" action="{{ url_for('delete', id=entry.id) }}"></form>
+
             <div class="form-actions">
-                <form method="POST" action="{{ url_for('delete', id=entry.id) }}" style="display:contents;">
-                    <button type="submit" class="btn-danger">Yes, delete it</button>
-                </form>
+                <button type="submit" form="delete-form" class="btn-danger">Yes, delete it</button>
                 <a href="javascript:history.back()" class="btn-ghost">No, go back</a>
             </div>
         </div>

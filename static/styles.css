@@ -344,7 +344,19 @@ body {
 
 .add-form input:focus { border-bottom-color: #1e3a5c; }
 
-.add-form input[type="date"]   { width: 148px; }
+.add-form input[type="date"]   { width: 172px; }
+
+.add-form input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    width: 100%;
+    position: absolute;
+    cursor: pointer;
+}
+
+.add-form input[type="date"]:hover {
+    border-bottom-color: #1e3a5c;
+    background: rgba(200, 221, 240, 0.15);
+}
 .add-form input[type="text"]   { flex: 1; min-width: 120px; }
 .add-form input[type="number"] { width: 100px; }
 
@@ -388,12 +400,28 @@ body {
 .nav-btn:hover { background: #5e4a36; color: #fff; }
 .nav-btn.disabled { opacity: 0.25; pointer-events: none; }
 
+.nav-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
 .page-indicator {
     color: rgba(212,200,184,0.7);
     font-family: var(--font-main);
     font-size: 1rem;
     text-align: center;
 }
+
+.today-btn {
+    font-size: 0.95rem;
+    padding: 3px 14px;
+    background: #3a5a3a;
+    border-color: rgba(255,255,255,0.1);
+}
+
+.today-btn:hover { background: #4a7a4a; }
 
 /* ── Font picker ───────────────────────────────────────────────────────── */
 .font-picker-wrap {
@@ -692,7 +720,7 @@ body {
     font-size: 1.1rem;
     line-height: 1.4;
     color: #fffef2;
-    background: #4a5568;
+    background: #1e3a5c;
     border: 1px solid transparent;
     border-radius: 4px;
     padding: 6px 20px;
@@ -702,7 +730,7 @@ body {
     transition: background 0.2s;
 }
 
-.btn-ghost:hover { background: #3a4455; }
+.btn-ghost:hover { background: #162d47; }
 
 .confirm-entry {
     font-size: 1.2rem;

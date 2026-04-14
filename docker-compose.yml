@@ -1,0 +1,8 @@
+services:
+  app:
+    image: harbor.dbyron.net/library/my-budget:1.2.8-beta
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
