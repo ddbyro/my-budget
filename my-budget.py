@@ -119,6 +119,12 @@ def pay_period_view(year, month, period):
     bill_names = [r[0] for r in db.session.query(Entry.bill_name)
                   .distinct().order_by(Entry.bill_name).all()]
 
+    now = datetime.datetime.now()
+    today_year   = now.year
+    today_month  = now.month
+    today_period = 1 if now.day <= 15 else 2
+    is_today = (year == today_year and month == today_month and period == today_period)
+
     return render_template('pay_period.html',
                            entries=entries,
                            year=year, month=month, period=period,
@@ -128,6 +134,10 @@ def pay_period_view(year, month, period):
                            next_year=next_year, next_month=next_month, next_period=next_period,
                            month_names=month_names,
                            bill_names=bill_names,
+                           is_today=is_today,
+                           today_year=today_year,
+                           today_month=today_month,
+                           today_period=today_period,
                            **common_context())
 
 
@@ -204,4 +214,4 @@ def settings():
     value = request.form.get('value', '').strip()
     if key and value:
         set_config(key, value)
-    return ('', 204)
+    return '', 204
