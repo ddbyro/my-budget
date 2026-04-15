@@ -29,7 +29,13 @@
                         <input type="text" id="q" name="q"
                                value="{{ q }}"
                                placeholder="e.g. Rent, Electric…"
+                               list="search-bill-suggestions"
                                autocomplete="off">
+                        <datalist id="search-bill-suggestions">
+                            {% for name in bill_names %}
+                            <option value="{{ name }}">
+                            {% endfor %}
+                        </datalist>
                     </div>
                 </div>
                 <div class="search-row search-row--dates">
