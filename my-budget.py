@@ -231,10 +231,14 @@ def search():
 
     total = sum(e.amount_due for e in entries)
 
+    bill_names = [r[0] for r in db.session.query(Entry.bill_name)
+                  .distinct().order_by(Entry.bill_name).all()]
+
     return render_template('search.html',
                            q=q, from_=from_, to_=to_,
                            entries=entries, total=total,
                            searched=searched,
+                           bill_names=bill_names,
                            **common_context())
 
 
