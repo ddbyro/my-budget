@@ -424,6 +424,23 @@ body {
 .today-btn:hover { background: #4a7a4a; }
 
 /* ── Font picker ───────────────────────────────────────────────────────── */
+.search-btn {
+    position: absolute;
+    top: 16px;
+    right: 70px;
+    background: #1e3a5c;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #fffef2;
+    cursor: pointer;
+    padding: 2px 8px;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: background 0.15s;
+}
+.search-btn:hover { background: #142a44; }
+
 .font-picker-wrap {
     position: absolute;
     top: 16px;
@@ -635,6 +652,84 @@ body {
 
 /* ── Edit / delete pages ───────────────────────────────────────────────── */
 .form-page { padding: 24px 36px 36px 88px; }
+
+/* ── Search ────────────────────────────────────────────────────────────── */
+.search-form { margin-bottom: 20px; }
+
+.search-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 16px;
+}
+
+.search-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.search-field label {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.search-field input {
+    font-family: var(--font-main);
+    font-size: 1.1rem;
+    border: none;
+    border-bottom: 1px solid #c0c0c0;
+    background: transparent;
+    padding: 2px 6px;
+    outline: none;
+    color: #222;
+    height: 32px;
+    transition: border-color 0.2s;
+}
+
+.search-field input:focus { border-bottom-color: #1e3a5c; }
+.search-field--name input { min-width: 200px; }
+.search-field input[type="date"] { width: 160px; }
+
+.search-field input[type="date"]::-webkit-calendar-picker-indicator,
+.search-field input[type="date"]::-webkit-inner-spin-button,
+.search-field input[type="date"]::-webkit-outer-spin-button {
+    display: none;
+    -webkit-appearance: none;
+}
+
+.search-field input[type="date"]:hover {
+    border-bottom-color: #1e3a5c;
+    background: rgba(200, 221, 240, 0.15);
+}
+
+.search-row--dates  { margin-top: 12px; }
+.search-row--submit { margin-top: 16px; }
+
+.daterange-inputs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.daterange-sep {
+    color: #888;
+    line-height: 32px;
+}
+
+.search-submit { align-self: flex-end; }
+
+.search-results { margin-top: 8px; }
+
+.search-summary {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e0d8cc;
+}
+
+.search-summary em { color: #1e3a5c; font-style: normal; font-weight: 600; }
 
 .form-title {
     font-size: 1.5rem;

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ budget_name }} — Search</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat:wght@400;600;700&family=Courier+Prime:wght@400;700&family=Dancing+Script:wght@400;700&family=Indie+Flower&family=Kalam:wght@400;700&family=Lato:wght@400;700&family=Libre+Baskerville:wght@400;700&family=Merriweather:wght@400;700&family=Montserrat:wght@400;700&family=Nunito:wght@400;700&family=Open+Sans:wght@400;700&family=Pacifico&family=Patrick+Hand&family=Permanent+Marker&family=Playfair+Display:wght@400;700&family=Poppins:wght@400;700&family=Roboto:wght@400;700&family=Shadows+Into+Light&family=Source+Code+Pro:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>:root { --font-main: '{{ font_family }}', sans-serif; } body { font-family: var(--font-main); }</style>
+</head>
+<body>
+    <div class="notepad-wrapper">
+
+        <div class="spiral-binding">
+            {% for i in range(13) %}
+            <div class="spiral-ring"></div>
+            {% endfor %}
+        </div>
+
+        <div class="notepad-page form-page">
+            <div class="form-title">Search Bills</div>
+
+            <form method="GET" action="{{ url_for('search') }}" class="search-form">
+                <div class="search-row">
+                    <div class="search-field search-field--name">
+                        <label for="q">Bill name</label>
+                        <input type="text" id="q" name="q"
+                               value="{{ q }}"
+                               placeholder="e.g. Rent, Electric…"
+                               autocomplete="off">
+                    </div>
+                </div>
+                <div class="search-row search-row--dates">
+                    <div class="search-field search-field--daterange">
+                        <label>Date range</label>
+                        <div class="daterange-inputs">
+                            <input type="date" id="from" name="from" value="{{ from_ }}">
+                            <span class="daterange-sep">&ndash;</span>
+                            <input type="date" id="to" name="to" value="{{ to_ }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="search-row search-row--submit">
+                    <button type="submit" class="btn-primary">Search</button>
+                </div>
+            </form>
+
+            {% if searched %}
+            <div class="search-results">
+                <div class="search-summary">
+                    {% if entries %}
+                        {{ entries|length }} result{{ 's' if entries|length != 1 }} found
+                    {% else %}
+                        No results found
+                    {% endif %}
+                    {% if q %} for <em>"{{ q }}"</em>{% endif %}
+                    {% if from_ and to_ %}
+                        between <em>{{ from_ }}</em> and <em>{{ to_ }}</em>
+                    {% elif from_ %}
+                        from <em>{{ from_ }}</em>
+                    {% elif to_ %}
+                        through <em>{{ to_ }}</em>
+                    {% endif %}
+                </div>
+
+                {% if entries %}
+                <div class="bills-section">
+                    {% for entry in entries %}
+                    {% set period = 1 if entry.due_date.day <= 15 else 2 %}
+                    <div class="bill-row">
+                        <span class="bill-date">{{ entry.due_date.strftime('%b %d, %Y') }}</span>
+                        <span class="bill-name">{{ entry.bill_name }}</span>
+                        <span class="bill-amount">${{ "%.2f"|format(entry.amount_due) }}</span>
+                        <span class="bill-actions">
+                            <a href="{{ url_for('pay_period_view', year=entry.due_date.year, month=entry.due_date.month, period=period) }}"
+                               class="action-link edit" title="Go to this period">view</a>
+                            <a href="{{ url_for('edit', id=entry.id) }}" class="action-link edit">edit</a>
+                            <a href="{{ url_for('delete', id=entry.id) }}" class="action-link delete" title="Delete">×</a>
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="total-row">
+                    <span>Total</span>
+                    <span class="total-amount">${{ "%.2f"|format(total) }}</span>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+        </div>
+
+        <div class="page-nav">
+            <a href="javascript:history.back()" class="nav-btn">&#8249; Back</a>
+            <span class="page-indicator">{{ budget_name }}</span>
+            <span class="nav-btn" style="visibility:hidden;">placeholder</span>
+        </div>
+
+    </div>
+</body>
+</html>

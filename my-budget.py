@@ -199,6 +199,45 @@ def delete(id):
     return render_template('delete.html', entry=entry, **common_context())
 
 
+@app.route('/search')
+def search():
+    """Search bills by name and/or date range. All params optional."""
+    q      = request.args.get('q', '').strip()
+    from_  = request.args.get('from', '').strip()
+    to_    = request.args.get('to', '').strip()
+
+    entries = []
+    searched = q or from_ or to_
+
+    if searched:
+        query = Entry.query
+
+        if q:
+            query = query.filter(Entry.bill_name.ilike(f'%{q}%'))
+
+        if from_:
+            try:
+                query = query.filter(Entry.due_date >= datetime.date.fromisoformat(from_))
+            except ValueError:
+                pass
+
+        if to_:
+            try:
+                query = query.filter(Entry.due_date <= datetime.date.fromisoformat(to_))
+            except ValueError:
+                pass
+
+        entries = query.order_by(Entry.due_date).all()
+
+    total = sum(e.amount_due for e in entries)
+
+    return render_template('search.html',
+                           q=q, from_=from_, to_=to_,
+                           entries=entries, total=total,
+                           searched=searched,
+                           **common_context())
+
+
 @app.route('/bill-history')
 def bill_history():
     """Return JSON with last-month and last-year amounts for a named bill (used by the UI history popup)."""
